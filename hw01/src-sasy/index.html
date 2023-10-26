@@ -6,6 +6,8 @@
     <title>CSV Table with D3.js</title>
     
     <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     
     <style type="text/css">
         table, th, td {
@@ -97,56 +99,16 @@
         document.body.appendChild(table);
 
         function tableToCSV() {
-            // Variable to store the final csv data
-            var csv_data = [];
-            // Get each row data
-            var rows = document.getElementsByTagName('tr');
-            
-            for (var i = 0; i < rows.length; i++) {
-                // Get each column data
-                var cols = rows[i].querySelectorAll('td,th');
-                // Stores each csv row data
-                var csvrow = [];
-                for (var j = 0; j < cols.length; j++) {
-                    // Get the text data of each cell
-                    // of a row and push it to csvrow
-                    csvrow.push(cols[j].innerHTML);
-                }
-                // Combine each column value with comma
-                csv_data.push(csvrow.join(","));
-            }
+            // 使用PapaParse将数据转换为CSV
+            var csvData = Papa.unparse(a3, {
+                delimiter: ","
+            });
 
-            // Combine each row data with new line character
-            csv_data = csv_data.join('\n');
+            // 创建Blob对象，并指定UTF-8字符集
+            var blob = new Blob(["\ufeff", csvData], { type: 'text/csv;charset=utf-8' });
 
-            // Call this function to download csv file 
-            downloadCSVFile(csv_data);
-        }
-
-        function downloadCSVFile(csv_data) {
-            // Create CSV file object and feed
-            // our csv_data into it
-            CSVFile = new Blob([csv_data], {
-                                            type: "text/csv"
-                                            });
-
-            // Create to temporary link to initiate
-            // download process
-            var temp_link = document.createElement('a');
-
-            // Download csv file
-            temp_link.download = "data.csv";
-            var url = window.URL.createObjectURL(CSVFile);
-            temp_link.href = url;
-
-            // This link should not be displayed
-            temp_link.style.display = "none";
-            document.body.appendChild(temp_link);
-
-            // Automatically click the link to
-            // trigger download
-            temp_link.click();
-            document.body.removeChild(temp_link);
+            // 使用FileSaver.js下载CSV文件
+            saveAs(blob, 'data.csv');
         }
     </script>
 </body>
