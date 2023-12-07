@@ -1,0 +1,14 @@
+{
+  "name": "1209763a8ff06234",
+  "main": "1209763a8ff06234@54.js",
+  "version": "54.0.0",
+  "homepage": "https://observablehq.com/d/1209763a8ff06234",
+  "author": {
+    "name": "北科大-郭駿頤's Workspace",
+    "url": "https://observablehq.com/@bei-ke-da-guo-jun-yi-ws"
+  },
+  "type": "module",
+  "peerDependencies": {
+    "@observablehq/runtime": "4 - 5"
+  }
+}
